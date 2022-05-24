@@ -29,6 +29,7 @@ import TimePick from '../components/TimePick'
 const MyRoutineScreen = () => {
   const [newTask, setNewTask] = useState('')
   const [tasks, setTasks] = useState({})
+  const [passingdata, setPassingDate] = useState('')
   {
     /*title*/
   }
@@ -85,6 +86,7 @@ const MyRoutineScreen = () => {
     1: { id: '1', text: 'Start' },
     2: { id: '2', text: 'End' },
   })
+
   const _passingtime = (item, text) => {
     const newRange = Object.assign({}, hoursRange)
     newRange[item.id]['text'] = text
@@ -118,9 +120,7 @@ const MyRoutineScreen = () => {
     setNewTask('')
     setTasks({ ...tasks, ...newTaskObject })
   }
-  useEffect(() => {
-    console.log(tasks)
-  }, [tasks])
+  useEffect(() => {}, [tasks])
 
   const _handleTextChange = (text) => {
     setNewTask(text)
@@ -150,6 +150,15 @@ const MyRoutineScreen = () => {
   const onChange = (date) => {
     setSelectedDate(date)
   }
+  const onSubmit = () => {
+    console.log('title', title)
+    console.log('selected Date', selectedDate)
+    console.log('printdate', printDate())
+    console.log('Tasks', tasks)
+    console.log('hoursrange', hoursRange)
+  }
+
+  console.log(hoursRange)
 
   return (
     <LinearGradient
@@ -213,10 +222,15 @@ const MyRoutineScreen = () => {
 
       <View style={styles.todo}>
         <Title value={title} onChangeText={setTitle}></Title>
-
+        <Button title="save" onPress={onSubmit}></Button>
         <View style={[styles.timePick]}>
           {Object.values(hoursRange).map((item) => (
-            <TimePick key={item.id} item={item} />
+            <TimePick
+              key={item.id}
+              item={item}
+              setHoursRange={setHoursRange}
+              hoursRange={hoursRange}
+            />
           ))}
           {/*
           <Button

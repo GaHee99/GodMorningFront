@@ -2,15 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
-const TimePick = ({ item, passingtime }) => {
+const TimePick = ({ item, setHoursRange, hoursRange }) => {
   const [selectedDate, setSelectedDate] = useState()
   const [datePickerVisible, setDatePickerVisible] = useState(false)
 
   const handleConfirm = (hour) => {
     setSelectedDate(hour)
     hideDatePicker()
+    const today = hour.toLocaleTimeString('en-US', {
+      timeStyle: 'short',
+    })
+    const currentTime = Object.assign({}, hoursRange)
+    currentTime[item.id]['text'] = today
+    console.log(currentTime)
+    setHoursRange(currentTime)
   }
-
   //새로시작
   const showDatePicker = () => {
     setDatePickerVisible(true)
@@ -27,8 +33,9 @@ const TimePick = ({ item, passingtime }) => {
     const today = selectedDate.toLocaleTimeString('en-US', {
       timeStyle: 'short',
     })
-    //
-    // passingtime(item, today)
+
+    // console.log(hoursRange[item.id]['text'])
+
     return `${today}`
   }
 
