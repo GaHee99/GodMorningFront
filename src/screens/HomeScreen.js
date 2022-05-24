@@ -9,7 +9,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native'
-import Todo from '../../Todo'
+import Todo from '../../정리/Todo'
 import todos from '../../assets/data/todos'
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'

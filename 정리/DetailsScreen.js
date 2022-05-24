@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { StatusBar } from 'expo-status-bar'
 import Todo from './Todo'
-import todos from './assets/data/todos'
+import todos from '../assets/data/todos'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 function DetailsScreen() {
