@@ -13,11 +13,13 @@ const Choose1 = () => {
 
   return (
     <View style={styles.container}>
-      {Object.values(choose).map((item) => (
-        <Pressable>
-          <Text style={styles.text}>{item.text}</Text>
-        </Pressable>
-      ))}
+      {Object.values(choose).map((item) => {
+        const textStyles = [styles.dayText](
+          <Pressable>
+            <Text style={styles.text}>{item.text}</Text>
+          </Pressable>,
+        )
+      })}
     </View>
   )
 }

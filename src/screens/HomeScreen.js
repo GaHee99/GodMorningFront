@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RoutineButton from '../components/RoutineButton'
 import TopBar from '../components/TopBar'
 
-import Choose1 from '../components/Choose1'
+import Choose from '../components/Choose'
 import Hours from '../components/Hours'
 
 function HomeScreen() {
@@ -25,7 +25,7 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <TopBar />
-      <Choose1 />
+      <Choose />
       <Hours />
       <View
         style={{
