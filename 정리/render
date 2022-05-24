@@ -1,0 +1,27 @@
+
+      <Todo
+        todo={todos[1]}
+        /* 
+        todo={{
+          title: 'title',
+          timezone: '7:00',
+          todo_list: [
+            {
+              post_no: '1',
+              content: '명상',
+              check_do: 0,
+            },
+            {
+              post_no: '2',
+              content: '시각화',
+              check_do: 0,
+            },
+            {
+              post_no: '3',
+              content: '10번 확언 ',
+              check_do: 0,
+            },
+          ],
+        }}
+        */
+      />
