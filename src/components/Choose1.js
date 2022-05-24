@@ -5,19 +5,24 @@ import { useNavigation } from '@react-navigation/native'
 
 const Choose1 = () => {
   const [choose, setChoose] = useState({
-    1: { id: '1', text: '홈' },
-    2: { id: '2', text: '바보' },
-    3: { id: '3', text: '신규' },
+    1: { id: '1', text: '홈1' },
+    2: { id: '2', text: '인기1' },
+    3: { id: '3', text: '신규1' },
   })
   const navigation = useNavigation()
-
+  const onpress = () => {
+    console.log('pressed')
+    console.log(key)
+  }
   return (
     <View style={styles.container}>
       {Object.values(choose).map((item) => {
-        const textStyles = [styles.dayText](
-          <Pressable>
+        const textStyles = [styles.text]
+        const touchableStyles = [styles.touchableDay]
+        return (
+          <Pressable key={item.id} onPress={onpress(key)}>
             <Text style={styles.text}>{item.text}</Text>
-          </Pressable>,
+          </Pressable>
         )
       })}
     </View>

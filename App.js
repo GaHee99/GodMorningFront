@@ -13,7 +13,7 @@ import MyRoutineScreen from './src/screens/MyRoutineScreen'
 import MyPageScreen from './src/screens/MyPageScreen'
 import NewScreen from './src/screens/NewScreen'
 import PopularScreen from './src/screens/PopularScreen'
-import DetailsScreen from './DetailsScreen'
+
 import OtherRoutineScreen from './src/screens/OtherRoutineScreen'
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
