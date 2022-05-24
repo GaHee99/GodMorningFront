@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View, Image } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const TopBar = () => {
   return (
@@ -19,13 +20,14 @@ const TopBar = () => {
         >
           GOD[T] Morning
         </Text>
+
+        <View
+          style={{
+            borderBottomColor: '#C4C4C4',
+            borderBottomWidth: 1,
+          }}
+        />
       </View>
-      <View
-        style={{
-          borderBottomColor: '#C4C4C4',
-          borderBottomWidth: 1,
-        }}
-      />
     </>
   )
 }

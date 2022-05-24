@@ -3,8 +3,8 @@ export default [
   {
     id: '0',
     title: '느긋한 아침루틴',
-    timezone1: '7:00',
-    timezone2: '7:10',
+    timezone1: '7:00am',
+    timezone2: '7:10pm',
     create_time: '1:30pm',
     todo_list: [
       {

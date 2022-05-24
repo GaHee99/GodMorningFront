@@ -10,6 +10,8 @@ import LoginScreen from './src/screens/LoginScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import MyRoutineScreen from './src/screens/MyRoutineScreen'
+
+import MyRoutineScreen_save from './src/screens/MyRoutineScreen_save'
 import MyPageScreen from './src/screens/MyPageScreen'
 import NewScreen from './src/screens/NewScreen'
 import PopularScreen from './src/screens/PopularScreen'
@@ -73,7 +75,7 @@ function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="MyRoutine"
-        component={MyRoutineScreen}
+        component={MyRoutineScreen_save}
         options={{
           title: 'MyRoutine',
           tabBarIcon: ({ color }) => (

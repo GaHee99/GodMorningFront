@@ -25,8 +25,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 //import { images } from '../../assets/icons/images'
 import Task from '../components/Task'
 import TimePick from '../components/TimePick'
+import { Alert } from 'react-native-web'
 
-const MyRoutineScreen = () => {
+const MyRoutineScreen_save = () => {
   const [newTask, setNewTask] = useState('')
   const [tasks, setTasks] = useState({})
 
@@ -157,6 +158,9 @@ const MyRoutineScreen = () => {
     console.log('Tasks', tasks)
     console.log('hoursrange', hoursRange)
   }
+  const onPost = () => {
+    Alert.alert('post')
+  }
 
   console.log(hoursRange)
 
@@ -222,7 +226,10 @@ const MyRoutineScreen = () => {
 
       <View style={styles.todo}>
         <Title value={title} onChangeText={setTitle}></Title>
-        <Button title="save" onPress={onSubmit}></Button>
+        <View style={styles.post_save_container}>
+          <Button title="Save" onPress={onSubmit}></Button>
+          <Button title="Post" onPress={onPost}></Button>
+        </View>
         <View style={[styles.timePick]}>
           {Object.values(hoursRange).map((item) => (
             <TimePick
@@ -322,6 +329,13 @@ const styles = StyleSheet.create({
 
     borderRadius: 30,
   },
+  post_save_container: {
+    bottom: 10,
+    width: '100%',
+    paddingRight: 15,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
 })
 
-export default MyRoutineScreen
+export default MyRoutineScreen_save
