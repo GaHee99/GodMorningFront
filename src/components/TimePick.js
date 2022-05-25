@@ -14,7 +14,7 @@ const TimePick = ({ item, setHoursRange, hoursRange }) => {
     })
     const currentTime = Object.assign({}, hoursRange)
     currentTime[item.id]['text'] = today
-    console.log(currentTime)
+
     setHoursRange(currentTime)
   }
   //새로시작

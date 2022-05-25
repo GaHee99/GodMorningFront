@@ -15,6 +15,7 @@ import {
   Button,
   ScrollView,
   Dimensions,
+  Alert,
   TouchableOpacity,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -25,7 +26,6 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 //import { images } from '../../assets/icons/images'
 import Task from '../components/Task'
 import TimePick from '../components/TimePick'
-import { Alert } from 'react-native-web'
 
 const MyRoutineScreen_save = () => {
   const [newTask, setNewTask] = useState('')
@@ -69,30 +69,10 @@ const MyRoutineScreen_save = () => {
     return `${month}.${day} ${dayName}`
   }
 
-  {
-    /*Time
-      //이거 안댐 ㅠㅠ 
-      const _renewHour = () => {
-        const currentHour = Object.assign({}, hoursRange)
-        currentHour[1]['text'] = '시작시간'
-        currentHour[2]['text'] = '시작시간'
-        setHoursRange(currentHour)
-        console.log('renew')
-        console.log(hoursRange)
-  }
-     */
-  }
-
   const [hoursRange, setHoursRange] = useState({
     1: { id: '1', text: 'Start' },
     2: { id: '2', text: 'End' },
   })
-
-  const _passingtime = (item, text) => {
-    const newRange = Object.assign({}, hoursRange)
-    newRange[item.id]['text'] = text
-    setHoursRange(newRange)
-  }
 
   {
     /*task*/
@@ -121,7 +101,7 @@ const MyRoutineScreen_save = () => {
     setNewTask('')
     setTasks({ ...tasks, ...newTaskObject })
   }
-  useEffect(() => {}, [tasks])
+  useEffect(() => {}, [tasks, selectedDate])
 
   const _handleTextChange = (text) => {
     setNewTask(text)
@@ -151,7 +131,8 @@ const MyRoutineScreen_save = () => {
   const onChange = (date) => {
     setSelectedDate(date)
   }
-  const onSubmit = () => {
+  const onSave2 = () => {
+    Alert.alert('Save')
     console.log('title', title)
     console.log('selected Date', selectedDate)
     console.log('printdate', printDate())
@@ -162,11 +143,62 @@ const MyRoutineScreen_save = () => {
     Alert.alert('post')
   }
 
-  console.log(hoursRange)
+  const [save, setSave] = useState({})
+  const [todos, setTodos] = useState({})
+  const onSave = () => {
+    const today = selectedDate // 현재 날짜
+    const month = today.toLocaleDateString('en-US', {
+      month: '2-digit',
+    })
+    const day = today.toLocaleDateString('en-US', {
+      day: '2-digit',
+    })
+    const ID = `${month}.${day}`
+    Alert.alert('Save')
+    //console.log(ID)c
+    const saveTodoObject = {
+      [selectedDate]: {
+        id: selectedDate,
+        title: title,
+        create_date: selectedDate,
+        startTime: hoursRange[1]['text'],
+        endTime: hoursRange[2]['text'],
+        todo_list: tasks,
+      },
+    }
+    const newToDos = { ...todos, ...saveTodoObject }
+    setTodos(newToDos)
+    setTasks({})
+    console.log('savetodoobject', saveTodoObject)
+  }
+  // console.log('todos', typeof todos[selectedDate] == 'undefined')
+  {
+    /*
+    typeof todos[selectedDate] != 'undefined' &&
+    Object.keys(todos[selectedDate]['todo_list']).length === 0
+      ? console.log('emptytodo')
+      : console.log('둘중하나 x ')
+*/
+  }
+  // 선택한날 empty => tasks, 렌더링 후 add
+  // 선택한날 o , todo랑,제목들만 x =>
+  // 선택한날 o , todo 다 있으면? => 배열안에껏들 랜더링
+  const discrimination = () => {
+    if (typeof todos[selectedDate] == 'undefined') {
+      return true
+    } else if (
+      typeof todos[selectedDate] != 'undefined' &&
+      Object.keys(todos[selectedDate]['todo_list']).length === 0
+    ) {
+      console.log('false')
+      return false
+    }
+  }
 
+  // console.log('todos', Object.keys(todos[selectedDate]['todo_list']).length)
+  //배열에 없으면 저장하는거 띄워야댐
   return (
     <LinearGradient
-      // Button Linear Gradient
       colors={[
         'rgba(184, 181, 255, 0.97) ',
         'rgba(210, 171, 217, 0.85) ',
@@ -225,9 +257,16 @@ const MyRoutineScreen_save = () => {
       </View>
 
       <View style={styles.todo}>
+        {/* 
+        <Title
+          value={todos[selectedDate]['title']}
+          onChangeText={setTitle}
+        ></Title>
+        
+        value={title}*/}
         <Title value={title} onChangeText={setTitle}></Title>
         <View style={styles.post_save_container}>
-          <Button title="Save" onPress={onSubmit}></Button>
+          <Button title="Save" onPress={onSave}></Button>
           <Button title="Post" onPress={onPost}></Button>
         </View>
         <View style={[styles.timePick]}>
@@ -254,7 +293,12 @@ const MyRoutineScreen_save = () => {
           onSubmitEditing={_addTask}
         />
         <ScrollView>
-          {Object.values(tasks).map((item) => (
+          {/* 
+           {typeof todos[selectedDate] == 'undefined'
+            ? console.log('render , empty')
+            : console.log(todos[selectedDate]['todo_list'])}
+          
+          {Object.values(todos[selectedDate]['todo_list']).map((item) => (
             <Task
               key={item.id}
               item={item}
@@ -263,6 +307,39 @@ const MyRoutineScreen_save = () => {
               updateTask={_updateTask}
             />
           ))}
+          
+
+           {discrimination()
+            ?  {Object.values(tasks).map((item) => (
+              <Task
+                key={item.id}
+                item={item}
+                deleteTask={_deleteTask}
+                toggleTask={_toggleTask}
+                updateTask={_updateTask}
+              />
+            ))}
+            : console.log(todos[selectedDate]['todo_list'])}
+          */}
+          {typeof todos[selectedDate] == 'undefined'
+            ? Object.values(tasks).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))
+            : Object.values(todos[selectedDate]['todo_list']).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))}
         </ScrollView>
       </View>
     </LinearGradient>
