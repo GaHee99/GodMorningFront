@@ -17,6 +17,9 @@ import NewScreen from './src/screens/NewScreen'
 import PopularScreen from './src/screens/PopularScreen'
 
 import OtherRoutineScreen from './src/screens/OtherRoutineScreen'
+import OtherRoutineScreen_axios from './src/screens/OtherRoutineScreen_axios'
+import ApiExercise from './src/screens/ApiExercise'
+
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -45,7 +48,7 @@ function HomeStackNaviator() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-      <HomeStack.Screen name="Others" component={OtherRoutineScreen} />
+      <HomeStack.Screen name="Others" component={OtherRoutineScreen_axios} />
       <HomeStack.Screen name="Popular" component={PopularScreen} />
       <HomeStack.Screen name="New" component={NewScreen} />
     </HomeStack.Navigator>

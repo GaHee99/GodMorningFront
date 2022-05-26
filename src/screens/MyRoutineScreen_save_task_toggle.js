@@ -79,19 +79,43 @@ const MyRoutineScreen_save = () => {
   }
 
   const _deleteTask = (id) => {
-    const currentTasks = Object.assign({}, tasks)
-    delete currentTasks[id]
-    setTasks(currentTasks)
+    if (typeof todos[selectedDate] == 'undefined') {
+      const currentTasks = Object.assign({}, tasks)
+      delete currentTasks[id]
+      setTasks(currentTasks)
+    } else {
+      const currenttodos = Object.assign({}, todos)
+      delete currenttodos[selectedDate]['todo_list'][id]
+      setTodos(currenttodos)
+    }
   }
   const _updateTask = (item) => {
-    const currentTasks = Object.assign({}, tasks)
-    currentTasks[item.id] = item
-    setTasks(currentTasks)
+    //const currentTasks = Object.assign({}, tasks)
+    // currentTasks[item.id] = item
+    if (typeof todos[selectedDate] == 'undefined') {
+      const currentTasks = Object.assign({}, tasks)
+      currentTasks[item.id] = item
+      setTasks(currentTasks)
+    } else {
+      const currenttodos = Object.assign({}, todos)
+      currenttodos[selectedDate]['todo_list'][item.id] = item
+      setTodos(currenttodos)
+    }
+
+    // console.log('item.id', item.id)
+    //console.log('item', item)
+    //  setTasks(currentTasks)
   }
   const _toggleTask = (id) => {
-    const currentTasks = Object.assign({}, tasks)
-    currentTasks[id]['completed'] = !currentTasks[id]['completed']
-    setTasks(currentTasks)
+    if (typeof todos[selectedDate] == 'undefined') {
+      const currentTasks = Object.assign({}, tasks)
+      currentTasks[id]['completed'] = !currentTasks[id]['completed']
+      setTasks(currentTasks)
+    } else {
+      const currenttodos = Object.assign({}, todos)
+      delete currenttodos[selectedDate]['todo_list'][id]
+      setTodos(currenttodos)
+    }
   }
   const _addTask = () => {
     const ID = Date.now().toString()
@@ -101,7 +125,7 @@ const MyRoutineScreen_save = () => {
     setNewTask('')
     setTasks({ ...tasks, ...newTaskObject })
   }
-  useEffect(() => {}, [tasks, selectedDate])
+  useEffect(() => {}, [tasks])
 
   const _handleTextChange = (text) => {
     setNewTask(text)
@@ -131,19 +155,11 @@ const MyRoutineScreen_save = () => {
   const onChange = (date) => {
     setSelectedDate(date)
   }
-  const onSave2 = () => {
-    Alert.alert('Save')
-    console.log('title', title)
-    console.log('selected Date', selectedDate)
-    console.log('printdate', printDate())
-    console.log('Tasks', tasks)
-    console.log('hoursrange', hoursRange)
-  }
+
   const onPost = () => {
     Alert.alert('post')
   }
 
-  const [save, setSave] = useState({})
   const [todos, setTodos] = useState({})
   const onSave = () => {
     const today = selectedDate // 현재 날짜
@@ -175,7 +191,10 @@ const MyRoutineScreen_save = () => {
       : console.log('둘중하나 x ')
 */
   }
-  console.log('todos', todos[selectedDate])
+  useEffect(() => {
+    console.log('todos', todos)
+  }, [todos])
+
   return (
     <LinearGradient
       colors={[
