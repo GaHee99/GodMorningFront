@@ -1,4 +1,5 @@
-import * as React from 'react'
+//import * as React from 'react'
+import { useState, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 
 import {
@@ -17,10 +18,20 @@ import TopBar from '../components/TopBar'
 
 import Choose from '../components/Choose'
 import Hours from '../components/Hours'
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading'
 function HomeScreen() {
   const navigation = useNavigation()
+  const [isReady, setIsReady] = useState(false)
 
-  return (
+  const getFonts = async () => {
+    await Font.loadAsync({
+      NanumSquareRoundB: require('../../assets/fonts/NanumSquareRoundB.ttf'),
+      Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
+    })
+  }
+
+  return isReady ? (
     <View style={styles.container}>
       <TopBar />
       <Choose />
@@ -45,18 +56,26 @@ function HomeScreen() {
         </View>
       </ScrollView>
     </View>
+  ) : (
+    <AppLoading
+      startAsync={getFonts}
+      onFinish={() => setIsReady(true)}
+      onError={() => {}}
+    />
   )
 }
 
 const styles = StyleSheet.create({
   todo: {
     borderWidth: 1,
+    fontFamily: 'NanumSquareRoundB',
   },
   container: {
     paddingTop: 40,
     flex: 1,
     height: '100%',
     backgroundColor: 'white',
+    fontFamily: 'NanumSquareRoundB',
   },
   routine: {
     flexDirection: 'row',

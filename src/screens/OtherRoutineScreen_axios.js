@@ -9,6 +9,7 @@ import todos from '../../assets/data/todos'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesome } from '@expo/vector-icons'
 import axios from 'axios'
+import { Touchable } from 'react-native-web'
 function OtherRoutineScreen_axios() {
   const navigation = useNavigation()
   const route = useRoute()
@@ -34,13 +35,13 @@ function OtherRoutineScreen_axios() {
         setLoading(true)
 
         const response = await axios.get(
-          'http://3.38.14.254/todo/list?id=1&create_date=20220523',
+          'http://3.38.14.254/todo/list?id=1&create_date=20220526',
         )
         setTodo(response.data)
         // 데이터는 response.data 안에 들어있습니다.
         const currentTime = Object.assign({}, hoursRange)
-        currentTime[1]['text'] = todos['startTime']
-        currentTime[2]['text'] = todos['endTime']
+        currentTime[1]['text'] = '7:00am'
+        currentTime[2]['text'] = '8:00am'
         setHoursRange(currentTime)
       } catch (e) {
         setError(e)
@@ -109,8 +110,9 @@ function OtherRoutineScreen_axios() {
           {Object.values(hoursRange).map((item) => (
             <TimePick key={item.id} item={item} />
           ))}
+
           <FontAwesome
-            style={{ left: 180 }}
+            style={{ left: 130 }}
             name="heart"
             size={30}
             color="rgb(255, 127, 127)"

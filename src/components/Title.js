@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
-
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading'
 const Title = ({ value, onChangeText }) => {
-  return (
+  const [isReady, setIsReady] = useState(false)
+
+  const getFonts = async () => {
+    await Font.loadAsync({
+      NanumSquareRoundB: require('../../assets/fonts/NanumSquareRoundB.ttf'),
+      Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
+    })
+  }
+
+  return isReady ? (
     <View style={styles.container}>
       <TextInput
         style={styles.title}
@@ -12,6 +22,12 @@ const Title = ({ value, onChangeText }) => {
         onChangeText={onChangeText}
       />
     </View>
+  ) : (
+    <AppLoading
+      startAsync={getFonts}
+      onFinish={() => setIsReady(true)}
+      onError={() => {}}
+    />
   )
 }
 
@@ -20,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    fontFamily: 'Cafe24Ohsquareair',
     width: '100%',
     fontSize: 25,
     fontWeight: '500',

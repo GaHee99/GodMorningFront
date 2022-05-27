@@ -4,12 +4,22 @@ import IconButton from './IconButton'
 import { images } from '../../images'
 import { LinearGradient } from 'expo-linear-gradient'
 import Input from './Input'
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading'
 IconButton.defaultProps = {
   onPressOut: () => {},
 }
 const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [text, setText] = useState(item.text)
+  const [isReady, setIsReady] = useState(false)
+
+  const getFonts = async () => {
+    await Font.loadAsync({
+      NanumSquareRoundB: require('../../assets/fonts/NanumSquareRoundB.ttf'),
+      Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
+    })
+  }
   const _handleUpdateButtonPress = () => {
     setIsEditing(true)
   }
@@ -20,8 +30,8 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
       updateTask(editedTask)
     }
   }
-
-  return isEditing ? (
+  //  return isEditing ? ( 와 여기 오류있을것같음 if else 구문 들로 해야할것같음.. 글씨체 적용..
+  return isReady && isEditing ? (
     <Input
       value={text}
       onChangeText={(text) => setText(text)}
@@ -62,6 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     flex: 1,
     color: 'black',
+    fontFamily: 'NanumSquareRoundB',
   },
   completed: {
     fontSize: 20,

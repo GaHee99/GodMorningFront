@@ -26,10 +26,20 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 //import { images } from '../../assets/icons/images'
 import Task from '../components/Task'
 import TimePick from '../components/TimePick'
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading'
 
 const MyRoutineScreen_save = () => {
   const [newTask, setNewTask] = useState('')
   const [tasks, setTasks] = useState({})
+  const [isReady, setIsReady] = useState(false)
+
+  const getFonts = async () => {
+    await Font.loadAsync({
+      NanumSquareRoundB: require('../../assets/fonts/NanumSquareRoundB.ttf'),
+      Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
+    })
+  }
 
   {
     /*title*/
@@ -213,7 +223,7 @@ const MyRoutineScreen_save = () => {
 */
   }
 
-  return (
+  return isReady ? (
     <LinearGradient
       colors={[
         'rgba(184, 181, 255, 0.97) ',
@@ -231,7 +241,14 @@ const MyRoutineScreen_save = () => {
     >
       <StatusBar style="auto" />
       <View style={styles.datepicker}>
-        <Text onPress={showDatePicker} style={{ fontSize: 24 }}>
+        <Text
+          onPress={showDatePicker}
+          style={{
+            fontSize: 24,
+            fontWeight: '600',
+            fontFamily: 'Cafe24Ohsquareair',
+          }}
+        >
           {selectedDate ? printDate() : 'No date selected'}
         </Text>
 
@@ -409,6 +426,12 @@ const MyRoutineScreen_save = () => {
         </ScrollView>
       </View>
     </LinearGradient>
+  ) : (
+    <AppLoading
+      startAsync={getFonts}
+      onFinish={() => setIsReady(true)}
+      onError={() => {}}
+    />
   )
 }
 
@@ -458,10 +481,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-  weekDayText: { fontSize: 17, marginBottom: 5, fontWeight: '500' },
-  dayText: { fontSize: 16 },
+  weekDayText: {
+    fontSize: 17,
+    marginBottom: 5,
+    fontWeight: '500',
+    fontFamily: 'Cafe24Ohsquareair',
+  },
+  dayText: { fontSize: 16, fontFamily: 'Cafe24Ohsquareair' },
   selectedDayText: {
     color: 'white',
+    fontFamily: 'Cafe24Ohsquareair',
     fontWeight: 'bold',
   },
   selectedTouchableDay: {
@@ -469,7 +498,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 30,
     height: 30,
-
+    fontFamily: 'Cafe24Ohsquareair',
     borderRadius: 30,
   },
   post_save_container: {

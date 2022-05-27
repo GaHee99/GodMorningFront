@@ -20,7 +20,7 @@ import PopularScreen from './src/screens/PopularScreen'
 import OtherRoutineScreen from './src/screens/OtherRoutineScreen'
 import OtherRoutineScreen_axios from './src/screens/OtherRoutineScreen_axios'
 import ApiExercise from './src/screens/ApiExercise'
-
+import Postexample from './Postexample'
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()

@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     left: 10,
+    top: 17,
     marginBottom: 10,
   },
   title: {
