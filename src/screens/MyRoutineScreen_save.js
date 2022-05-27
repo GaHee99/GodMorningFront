@@ -200,8 +200,8 @@ const MyRoutineScreen_save = () => {
     setTasks({})
     setTitle('')
   }
-  console.log('밖에서 consolelog todos', todos)
-  console.log('밖에서 consolelog tasks', tasks)
+  //console.log('밖에서 consolelog todos', todos)
+  //console.log('밖에서 consolelog tasks', tasks)
 
   {
     /* 
@@ -209,10 +209,10 @@ const MyRoutineScreen_save = () => {
     typeof todos[selectedDate] != 'undefined' &&
     Object.keys(todos[selectedDate]['todo_list']).length === 0
       ? console.log('emptytodo')
-      : console.log('둘중하나 x ')
+      : console.log('둘중하나 x ')today
 */
   }
-  //console.log('todos', todos[selectedDate])
+
   return (
     <LinearGradient
       colors={[

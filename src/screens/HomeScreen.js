@@ -17,7 +17,6 @@ import TopBar from '../components/TopBar'
 
 import Choose from '../components/Choose'
 import Hours from '../components/Hours'
-
 function HomeScreen() {
   const navigation = useNavigation()
 
