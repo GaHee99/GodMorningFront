@@ -192,8 +192,9 @@ const MyRoutineScreen_save = () => {
 */
   }
   useEffect(() => {
-    console.log('todos', todos)
+    console.log('useEffect todos', todos)
   }, [todos])
+  console.log(tasks)
 
   return (
     <LinearGradient
@@ -348,6 +349,25 @@ const MyRoutineScreen_save = () => {
                 />
               ))
             : Object.values(todos[selectedDate]['todo_list']).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))}
+          {tasks.length === 0
+            ? Object.values(tasks).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))
+            : Object.values(tasks).map((item) => (
                 <Task
                   key={item.id}
                   item={item}

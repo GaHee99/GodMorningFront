@@ -26,24 +26,14 @@ export default function ApiScreen() {
           alignItems: 'center',
         }}
       >
-        <Image
-          style={{ width: 244, height: 238, bottom: 100, left: 10 }}
-          source={require('./assets/logo.png')}
-        />
-        <Pressable
-          onPress={login}
-          style={{
-            height: 50,
-            width: 250,
-            borderRadius: 10,
-
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ color: 'gray', fontSize: 20 }}>Google</Text>
-        </Pressable>
+        {1 == 2 ? (
+          console.log('false')
+        ) : (
+          <>
+            <Text>gahee</Text>
+            <Text>gayeon</Text>
+          </>
+        )}
       </LinearGradient>
     </View>
   )

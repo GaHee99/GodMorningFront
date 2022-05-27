@@ -131,27 +131,38 @@ const MyRoutineScreen_save = () => {
   const onChange = (date) => {
     setSelectedDate(date)
   }
-  const onSave2 = () => {
-    Alert.alert('Save')
-    console.log('title', title)
-    console.log('selected Date', selectedDate)
-    console.log('printdate', printDate())
-    console.log('Tasks', tasks)
-    console.log('hoursrange', hoursRange)
-  }
+
   const onPost = () => {
     Alert.alert('post')
   }
 
-  const [save, setSave] = useState({})
   const [todos, setTodos] = useState({})
-  const onSave = () => {
-    const today = selectedDate // 현재 날짜
 
+  {
+    /*날짜 변환 */
+  }
+  const month = selectedDate.toLocaleDateString('en-US', {
+    month: '2-digit',
+  })
+  const day = selectedDate.toLocaleDateString('en-US', {
+    day: '2-digit',
+  })
+  const today = `${month}.${day}`
+
+  console.log(hoursRange)
+  const onSave = () => {
     Alert.alert('Save')
+
+    const month = selectedDate.toLocaleDateString('en-US', {
+      month: '2-digit',
+    })
+    const day = selectedDate.toLocaleDateString('en-US', {
+      day: '2-digit',
+    })
+    const today = `${month}.${day}`
     const saveTodoObject = {
-      [selectedDate]: {
-        id: selectedDate,
+      [today]: {
+        id: today,
         title: title,
         create_date: selectedDate,
         startTime: hoursRange[1]['text'],
@@ -159,12 +170,38 @@ const MyRoutineScreen_save = () => {
         todo_list: tasks,
       },
     }
-    const newToDos = { ...todos, ...saveTodoObject }
-    setTodos(newToDos)
-    console.log(newToDos)
+    //제일처음
+    //const newToDos = { ...todos, ...saveTodoObject }
+    //setTodos(newToDos)
+
+    if (
+      typeof todos[today] != 'undefined' &&
+      Object.keys(todos[today]['todo_list']).length != 0 &&
+      tasks.length !== 0
+    ) {
+      const addTasks = { ...todos[today]['todo_list'], ...tasks }
+      console.log('안에서 새로운 todo 들어오면 저장 addTasks', addTasks)
+      const addTodos = Object.assign({}, todos[today]['todo_list'], addTasks)
+      console.log(
+        '안에서 새로운 todo 저장완료 투두 리스트 업데이트 addTodos',
+        addTodos,
+      )
+      const newTodos = (todos[today]['todo_list'] = addTodos)
+      console.log(
+        '안에서 새로운 todo 저장완료 투두 리스트 업데이트 todo 업데이트 ',
+        newTodos,
+      )
+    } else {
+      const newToDos = Object.assign({}, todos, saveTodoObject)
+      setTodos(newToDos)
+      console.log('안에서 맨처음 암것도 없을때 저장 ', newToDos)
+    }
+
     setTasks({})
     setTitle('')
   }
+  console.log('밖에서 consolelog todos', todos)
+  console.log('밖에서 consolelog tasks', tasks)
 
   {
     /* 
@@ -175,7 +212,7 @@ const MyRoutineScreen_save = () => {
       : console.log('둘중하나 x ')
 */
   }
-  console.log('todos', todos[selectedDate])
+  //console.log('todos', todos[selectedDate])
   return (
     <LinearGradient
       colors={[
@@ -243,13 +280,10 @@ const MyRoutineScreen_save = () => {
         ></Title>
         <Title value={title} onChangeText={setTitle}></Title>
         value={title}*/}
-        {typeof todos[selectedDate] == 'undefined' ? (
+        {typeof todos[today] == 'undefined' ? (
           <Title value={title} onChangeText={setTitle}></Title>
         ) : (
-          <Title
-            value={todos[selectedDate]['title']}
-            onChangeText={setTitle}
-          ></Title>
+          <Title value={todos[today]['title']} onChangeText={setTitle}></Title>
         )}
 
         <View style={styles.post_save_container}>
@@ -284,7 +318,7 @@ const MyRoutineScreen_save = () => {
            {typeof todos[selectedDate] == 'undefined'
             ? console.log('render , empty')
             : console.log(todos[selectedDate]['todo_list'])}
-          
+           
           {Object.values(todos[selectedDate]['todo_list']).map((item) => (
             <Task
               key={item.id}
@@ -316,9 +350,9 @@ const MyRoutineScreen_save = () => {
                 />
               ))}
 
-          */}
 
-          {typeof todos[selectedDate] == 'undefined'
+
+              {typeof todos[selectedDate] == 'undefined'
             ? Object.values(tasks).map((item) => (
                 <Task
                   key={item.id}
@@ -337,6 +371,41 @@ const MyRoutineScreen_save = () => {
                   updateTask={_updateTask}
                 />
               ))}
+
+          */}
+
+          {typeof todos[today] == 'undefined'
+            ? Object.values(tasks).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))
+            : Object.values(todos[today]['todo_list']).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))}
+          {typeof todos[today] != 'undefined' &&
+          Object.keys(todos[today]['todo_list']).length != 0 &&
+          tasks.length !== 0
+            ? Object.values(tasks).map((item) => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={_deleteTask}
+                  toggleTask={_toggleTask}
+                  updateTask={_updateTask}
+                />
+              ))
+            : console.log('render    ')}
         </ScrollView>
       </View>
     </LinearGradient>
