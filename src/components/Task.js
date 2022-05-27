@@ -31,7 +31,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
     }
   }
   //  return isEditing ? ( 와 여기 오류있을것같음 if else 구문 들로 해야할것같음.. 글씨체 적용..
-  return isReady && isEditing ? (
+  return isEditing ? (
     <Input
       value={text}
       onChangeText={(text) => setText(text)}
