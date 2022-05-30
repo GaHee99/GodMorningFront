@@ -14,11 +14,14 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
   const [text, setText] = useState(item.text)
   const [isReady, setIsReady] = useState(false)
 
-  const getFonts = async () => {
+  {
+    /*const getFonts = async () => {
     await Font.loadAsync({
       NanumSquareRoundB: require('../../assets/fonts/NanumSquareRoundB.ttf'),
       Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
     })
+  }
+  */
   }
   const _handleUpdateButtonPress = () => {
     setIsEditing(true)

@@ -14,9 +14,9 @@ const TimePick = ({ item, setHoursRange, hoursRange }) => {
     })
     const currentTime = Object.assign({}, hoursRange)
     currentTime[item.id]['text'] = today
-
     setHoursRange(currentTime)
   }
+
   //새로시작
   const showDatePicker = () => {
     setDatePickerVisible(true)

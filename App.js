@@ -10,17 +10,13 @@ import LoginScreen from './src/screens/LoginScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import MyRoutineScreen from './src/screens/MyRoutineScreen'
-
-//import MyRoutineScreen_save_task_toggle from './src/screens/MyRoutineScreen_save_task_toggle'
+import MyRoutineScreen_save_2 from './src/screens/MyRoutineScreen_save_2'
 import MyRoutineScreen_save from './src/screens/MyRoutineScreen_save'
 import MyPageScreen from './src/screens/MyPageScreen'
 import NewScreen from './src/screens/NewScreen'
 import PopularScreen from './src/screens/PopularScreen'
-
 import OtherRoutineScreen from './src/screens/OtherRoutineScreen'
 import OtherRoutineScreen_axios from './src/screens/OtherRoutineScreen_axios'
-import ApiExercise from './src/screens/ApiExercise'
-import Postexample from './Postexample'
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -49,7 +45,7 @@ function HomeStackNaviator() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-      <HomeStack.Screen name="Others" component={OtherRoutineScreen_axios} />
+      <HomeStack.Screen name="Others" component={OtherRoutineScreen} />
       <HomeStack.Screen name="Popular" component={PopularScreen} />
       <HomeStack.Screen name="New" component={NewScreen} />
     </HomeStack.Navigator>
@@ -79,7 +75,7 @@ function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="MyRoutine"
-        component={MyRoutineScreen_save}
+        component={MyRoutineScreen_save_2}
         options={{
           title: 'MyRoutine',
           tabBarIcon: ({ color }) => (
@@ -95,7 +91,7 @@ function BottomTabNavigator() {
         name="MyPage"
         component={MyPageScreen}
         options={{
-          title: 'MyRoutine',
+          title: 'MyPageScreen',
 
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={30} color={color} />

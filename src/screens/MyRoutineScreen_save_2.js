@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { useState, useEffect } from 'react'
+import React from 'react'
 import {
   parseISO,
   isSameDay,
@@ -29,10 +30,13 @@ import TimePick from '../components/TimePick'
 import * as Font from 'expo-font'
 import AppLoading from 'expo-app-loading'
 
-const MyRoutineScreen_save = () => {
+const MyRoutineScreen_save_2 = () => {
   const [newTask, setNewTask] = useState('')
   const [tasks, setTasks] = useState({})
   const [isReady, setIsReady] = useState(false)
+  const [todos, setTodos] = useState({})
+
+  const [title, setTitle] = useState('')
 
   const getFonts = async () => {
     await Font.loadAsync({
@@ -40,11 +44,6 @@ const MyRoutineScreen_save = () => {
       Cafe24Ohsquareair: require('../../assets/fonts/Cafe24Ohsquareair.ttf'),
     })
   }
-
-  {
-    /*title*/
-  }
-  const [title, setTitle] = useState('')
 
   {
     /*Date*/
@@ -84,20 +83,41 @@ const MyRoutineScreen_save = () => {
     2: { id: '2', text: 'End' },
   })
 
-  {
-    /*task*/
-  }
-
   const _deleteTask = (id) => {
     const currentTasks = Object.assign({}, tasks)
     delete currentTasks[id]
     setTasks(currentTasks)
+    console.log('tasks', tasks)
+    if (
+      typeof todos[today] != 'undefined' &&
+      Object.keys(todos[today]['todo_list']).length != 0
+    ) {
+      const currentTodos = Object.assign({}, todos)
+      console.log('delete todos ', currentTodos[today]['todo_list'][id])
+      delete currentTodos[today]['todo_list'][id]
+      console.log('todos', todos[today]['todo_list'])
+    }
   }
+
   const _updateTask = (item) => {
-    const currentTasks = Object.assign({}, tasks)
-    currentTasks[item.id] = item
-    setTasks(currentTasks)
+    //todos안에 있는지 확인 아니면 수정ㅎㄴ거 고치게할거임 ㅅㅂㅄㅄㅄ
+    if (typeof todos[today] != 'undefined') {
+      if (typeof todos[today]['todo_list'][item.id] !== 'undefined') {
+        const currentTodos = Object.assign({}, todos)
+        currentTodos[today]['todo_list'][item.id] = item
+        setTodos[currentTodos]
+      } else {
+        const currentTasks = Object.assign({}, tasks)
+        currentTasks[item.id] = item
+        setTasks(currentTasks)
+      }
+    } else {
+      const currentTasks = Object.assign({}, tasks)
+      currentTasks[item.id] = item
+      setTasks(currentTasks)
+    }
   }
+
   const _toggleTask = (id) => {
     const currentTasks = Object.assign({}, tasks)
     currentTasks[id]['completed'] = !currentTasks[id]['completed']
@@ -111,7 +131,6 @@ const MyRoutineScreen_save = () => {
     setNewTask('')
     setTasks({ ...tasks, ...newTaskObject })
   }
-  useEffect(() => {}, [tasks, selectedDate])
 
   const _handleTextChange = (text) => {
     setNewTask(text)
@@ -123,7 +142,8 @@ const MyRoutineScreen_save = () => {
     setWeek(weekDays)
     //+ 이거 하면 다른날짜 렌더링할때 todo 안보임
     setTasks({})
-  }, [selectedDate])
+  }, [selectedDate, todos])
+
   const getWeekDays = (date) => {
     //  console.log(date, 'datee')
     const start = startOfWeek(date, { weekStartsOn: 1 })
@@ -147,8 +167,6 @@ const MyRoutineScreen_save = () => {
   const onPost = () => {
     Alert.alert('post')
   }
-
-  const [todos, setTodos] = useState({})
 
   {
     /*날짜 변환 */
@@ -199,30 +217,21 @@ const MyRoutineScreen_save = () => {
         addTodos,
       )
       const newTodos = (todos[today]['todo_list'] = addTodos)
-      // console.log(
-      //   '안에서 새로운 todo 저장완료 투두 리스트 업데이트 todo 업데이트 ',
-      //  newTodos,
-      // )
     } else {
       const newToDos = Object.assign({}, todos, saveTodoObject)
       setTodos(newToDos)
       console.log('안에서 맨처음 암것도 없을때 저장 ', newToDos)
     }
-
     setTasks({})
     setTitle('')
-  }
-  //console.log('밖에서 consolelog todos', todos)
-  //console.log('밖에서 consolelog tasks', tasks)
 
-  {
-    /* 
-    console.log('todos', typeof todos[selectedDate] == 'undefined')
-    typeof todos[selectedDate] != 'undefined' &&
-    Object.keys(todos[selectedDate]['todo_list']).length === 0
-      ? console.log('emptytodo')
-      : console.log('둘중하나 x ')today
-*/
+    const renewhours = Object.assign({}, hoursRange)
+
+    renewhours[1]['text'] = 'Start'
+    renewhours[2]['text'] = 'End'
+
+    setHoursRange(renewhours)
+    //console.log('todos', todos[today]['todo_list'])
   }
 
   return isReady ? (
@@ -310,7 +319,31 @@ const MyRoutineScreen_save = () => {
           <Button title="Post" onPress={onPost}></Button>
         </View>
         <View style={[styles.timePick]}>
-          {Object.values(hoursRange).map((item) => (
+          {typeof todos[today] == 'undefined'
+            ? Object.values(hoursRange).map((item) => (
+                <>
+                  <Text>{item.text}</Text>
+                  <TimePick
+                    key={item.id}
+                    item={item}
+                    setHoursRange={setHoursRange}
+                    hoursRange={hoursRange}
+                  />
+                </>
+              ))
+            : Object.values(hoursRange).map((item) => (
+                <>
+                  <TimePick
+                    key={item.id}
+                    item={item}
+                    setHoursRange={setHoursRange}
+                    hoursRange={hoursRange}
+                  />
+                </>
+              ))}
+          {/*
+
+            {Object.values(hoursRange).map((item) => (
             <TimePick
               key={item.id}
               item={item}
@@ -318,12 +351,20 @@ const MyRoutineScreen_save = () => {
               hoursRange={hoursRange}
             />
           ))}
-          {/*
-          <Button
-            title="  재설정"
-            onPress={_renewHour}
-            style={{ fontSize: 200, fontWeight: '600', marginLeft: 15 }}
-          />
+
+
+
+            {typeof todos[today] == 'undefined' ? 
+          Object.values(hoursRange).map((item) => (
+            <TimePick
+              key={item.id}
+              item={item}
+              setHoursRange={setHoursRange}
+              hoursRange={hoursRange}
+            />
+         )) : (
+          <Title value={todos[today]['title']} onChangeText={setTitle}></Title>
+        )}
            */}
         </View>
 
@@ -388,17 +429,19 @@ const MyRoutineScreen_save = () => {
               ))}
           */}
 
-          {typeof todos[today] == 'undefined'
-            ? Object.values(tasks).map((item) => (
-                <Task
-                  key={item.id}
-                  item={item}
-                  deleteTask={_deleteTask}
-                  toggleTask={_toggleTask}
-                  updateTask={_updateTask}
-                />
-              ))
-            : Object.values(todos[today]['todo_list']).map((item) => (
+          {typeof todos[today] == 'undefined' ? (
+            Object.values(tasks).map((item) => (
+              <Task
+                key={item.id}
+                item={item}
+                deleteTask={_deleteTask}
+                toggleTask={_toggleTask}
+                updateTask={_updateTask}
+              />
+            ))
+          ) : (
+            <>
+              {Object.values(todos[today]['todo_list']).map((item) => (
                 <Task
                   key={item.id}
                   item={item}
@@ -407,10 +450,7 @@ const MyRoutineScreen_save = () => {
                   updateTask={_updateTask}
                 />
               ))}
-          {typeof todos[today] != 'undefined' &&
-          Object.keys(todos[today]['todo_list']).length != 0 &&
-          tasks.length !== 0
-            ? Object.values(tasks).map((item) => (
+              {Object.values(tasks).map((item) => (
                 <Task
                   key={item.id}
                   item={item}
@@ -418,8 +458,16 @@ const MyRoutineScreen_save = () => {
                   toggleTask={_toggleTask}
                   updateTask={_updateTask}
                 />
-              ))
-            : console.log('render    ')}
+              ))}
+            </>
+          )}
+
+          {/*
+          
+
+
+         
+          */}
         </ScrollView>
       </View>
     </LinearGradient>
@@ -507,4 +555,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MyRoutineScreen_save
+export default MyRoutineScreen_save_2
