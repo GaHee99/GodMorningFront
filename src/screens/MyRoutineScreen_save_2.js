@@ -101,27 +101,49 @@ const MyRoutineScreen_save_2 = () => {
 
   const _updateTask = (item) => {
     //todos안에 있는지 확인 아니면 수정ㅎㄴ거 고치게할거임 ㅅㅂㅄㅄㅄ
-    if (typeof todos[today] != 'undefined') {
-      if (typeof todos[today]['todo_list'][item.id] !== 'undefined') {
-        const currentTodos = Object.assign({}, todos)
-        currentTodos[today]['todo_list'][item.id] = item
-        setTodos[currentTodos]
-      } else {
-        const currentTasks = Object.assign({}, tasks)
-        currentTasks[item.id] = item
-        setTasks(currentTasks)
-      }
+    if (
+      typeof todos[today] != 'undefined' &&
+      typeof todos[today]['todo_list'][item.id] !== 'undefined'
+    ) {
+      const currentTodos = Object.assign({}, todos)
+      currentTodos[today]['todo_list'][item.id] = item
+      setTodos[currentTodos]
+
+      const currentTasks = Object.assign({}, tasks)
+      currentTasks[item.id] = item
+      setTasks(currentTasks)
+      setChange(!change)
     } else {
       const currentTasks = Object.assign({}, tasks)
       currentTasks[item.id] = item
       setTasks(currentTasks)
     }
   }
-
+  const [change, setChange] = useState(true)
   const _toggleTask = (id) => {
-    const currentTasks = Object.assign({}, tasks)
+    {
+      /*const currentTasks = Object.assign({}, tasks)
     currentTasks[id]['completed'] = !currentTasks[id]['completed']
     setTasks(currentTasks)
+  */
+    }
+    if (
+      typeof todos[today] != 'undefined' &&
+      typeof todos[today]['todo_list'][id] !== 'undefined'
+    ) {
+      const currentTodos = Object.assign({}, todos)
+      console.log('여기까진 옴 ')
+      currentTodos[today]['todo_list'][id]['completed'] = !currentTodos[today][
+        'todo_list'
+      ][id]['completed']
+      setTodos[currentTodos]
+
+      setChange(!change)
+    } else {
+      const currentTasks = Object.assign({}, tasks)
+      currentTasks[id]['completed'] = !currentTasks[id]['completed']
+      setTasks(currentTasks)
+    }
   }
   const _addTask = () => {
     const ID = Date.now().toString()
@@ -142,7 +164,7 @@ const MyRoutineScreen_save_2 = () => {
     setWeek(weekDays)
     //+ 이거 하면 다른날짜 렌더링할때 todo 안보임
     setTasks({})
-  }, [selectedDate, todos])
+  }, [selectedDate, change])
 
   const getWeekDays = (date) => {
     //  console.log(date, 'datee')
