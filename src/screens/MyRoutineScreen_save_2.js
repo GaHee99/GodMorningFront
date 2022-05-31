@@ -164,6 +164,15 @@ const MyRoutineScreen_save_2 = () => {
     setWeek(weekDays)
     //+ 이거 하면 다른날짜 렌더링할때 todo 안보임
     setTasks({})
+    if (
+      typeof todos[today] != 'undefined'
+      // && todos[today]['title'].length != 0
+    ) {
+      setTitle(todos[today]['title'])
+      console.log(todos[today]['title'].length)
+    } else {
+      setTitle('')
+    }
   }, [selectedDate, change])
 
   const getWeekDays = (date) => {
@@ -245,7 +254,6 @@ const MyRoutineScreen_save_2 = () => {
       console.log('안에서 맨처음 암것도 없을때 저장 ', newToDos)
     }
     setTasks({})
-    setTitle('')
 
     const renewhours = Object.assign({}, hoursRange)
 
@@ -323,19 +331,17 @@ const MyRoutineScreen_save_2 = () => {
       </View>
 
       <View style={styles.todo}>
-        {/* 
-        <Title
-          value={todos[selectedDate]['title']}
-          onChangeText={setTitle}
-        ></Title>
         <Title value={title} onChangeText={setTitle}></Title>
-        value={title}*/}
-        {typeof todos[today] == 'undefined' ? (
-          <Title value={title} onChangeText={setTitle}></Title>
-        ) : (
-          <Title value={todos[today]['title']} onChangeText={setTitle}></Title>
-        )}
-
+        {/**
+        {
+          typeof todos[today] == 'undefined' ? (
+            <Title value={title} onChangeText={setTitle}></Title>
+          ) : (
+            <Title value={title} onChangeText={setTitle}></Title>
+          )
+          // <Title value={todos[today]['title']} onChangeText={setTitle}></Title>
+        }
+ */}
         <View style={styles.post_save_container}>
           <Button title="Save" onPress={onSave}></Button>
           <Button title="Post" onPress={onPost}></Button>
