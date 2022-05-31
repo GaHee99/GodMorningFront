@@ -29,7 +29,8 @@ import Task from '../components/Task'
 import TimePick from '../components/TimePick'
 import * as Font from 'expo-font'
 import AppLoading from 'expo-app-loading'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+const STORAGE_KEY = '@toDos'
 const MyRoutineScreen_save_2 = () => {
   const [newTask, setNewTask] = useState('')
   const [tasks, setTasks] = useState({})
@@ -83,7 +84,7 @@ const MyRoutineScreen_save_2 = () => {
     2: { id: '2', text: 'End' },
   })
 
-  const _deleteTask = (id) => {
+  const _deleteTask = async (id) => {
     const currentTasks = Object.assign({}, tasks)
     delete currentTasks[id]
     setTasks(currentTasks)
@@ -95,12 +96,12 @@ const MyRoutineScreen_save_2 = () => {
       const currentTodos = Object.assign({}, todos)
       console.log('delete todos ', currentTodos[today]['todo_list'][id])
       delete currentTodos[today]['todo_list'][id]
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(currentTodos))
       console.log('todos', todos[today]['todo_list'])
     }
   }
 
   const _updateTask = (item) => {
-    //todos안에 있는지 확인 아니면 수정ㅎㄴ거 고치게할거임 ㅅㅂㅄㅄㅄ
     if (
       typeof todos[today] != 'undefined' &&
       typeof todos[today]['todo_list'][item.id] !== 'undefined'
@@ -170,9 +171,12 @@ const MyRoutineScreen_save_2 = () => {
     ) {
       setTitle(todos[today]['title'])
       console.log(todos[today]['title'].length)
+      //todo load
+      loadToDos()
     } else {
       setTitle('')
     }
+    loadToDos()
   }, [selectedDate, change])
 
   const getWeekDays = (date) => {
@@ -211,16 +215,9 @@ const MyRoutineScreen_save_2 = () => {
   const today = `${month}.${day}`
 
   //console.log(hoursRange)
-  const onSave = () => {
+  const onSave = async () => {
     Alert.alert('Save')
 
-    const month = selectedDate.toLocaleDateString('en-US', {
-      month: '2-digit',
-    })
-    const day = selectedDate.toLocaleDateString('en-US', {
-      day: '2-digit',
-    })
-    const today = `${month}.${day}`
     const saveTodoObject = {
       [today]: {
         id: today,
@@ -231,9 +228,6 @@ const MyRoutineScreen_save_2 = () => {
         todo_list: tasks,
       },
     }
-    //제일처음
-    //const newToDos = { ...todos, ...saveTodoObject }
-    //setTodos(newToDos)
 
     if (
       typeof todos[today] != 'undefined' &&
@@ -241,16 +235,14 @@ const MyRoutineScreen_save_2 = () => {
       tasks.length !== 0
     ) {
       const addTasks = { ...todos[today]['todo_list'], ...tasks }
-      console.log('안에서 새로운 todo 들어오면 저장 addTasks', addTasks)
       const addTodos = Object.assign({}, todos[today]['todo_list'], addTasks)
-      console.log(
-        '안에서 새로운 todo 저장완료 투두 리스트 업데이트 addTodos',
-        addTodos,
-      )
-      const newTodos = (todos[today]['todo_list'] = addTodos)
+      const newTodos = todos
+      newTodos[today]['todo_list'] = addTodos
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newTodos))
     } else {
       const newToDos = Object.assign({}, todos, saveTodoObject)
       setTodos(newToDos)
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newToDos))
       console.log('안에서 맨처음 암것도 없을때 저장 ', newToDos)
     }
     setTasks({})
@@ -263,7 +255,12 @@ const MyRoutineScreen_save_2 = () => {
     setHoursRange(renewhours)
     //console.log('todos', todos[today]['todo_list'])
   }
-
+  const loadToDos = async () => {
+    const s = await AsyncStorage.getItem(STORAGE_KEY)
+    console.log('load todo ', JSON.parse(s))
+    s !== null ? setTodos(JSON.parse(s)) : null
+  }
+  //데이터 전체 지우기AsyncStorage.clear()
   return isReady ? (
     <LinearGradient
       colors={[
