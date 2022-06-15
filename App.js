@@ -17,6 +17,7 @@ import NewScreen from './src/screens/NewScreen'
 import PopularScreen from './src/screens/PopularScreen'
 import OtherRoutineScreen from './src/screens/OtherRoutineScreen'
 import OtherRoutineScreen_axios from './src/screens/OtherRoutineScreen_axios'
+import Postexample from './Postexample'
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -89,7 +90,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="MyPage"
-        component={MyPageScreen}
+        component={Postexample}
         options={{
           title: 'MyPageScreen',
 

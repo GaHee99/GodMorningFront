@@ -84,6 +84,7 @@ const MyRoutineScreen_save_2 = () => {
     2: { id: '2', text: 'End' },
   })
 
+  // AsyncStorage.clear()
   const _deleteTask = async (id) => {
     const currentTasks = Object.assign({}, tasks)
     delete currentTasks[id]
@@ -101,7 +102,7 @@ const MyRoutineScreen_save_2 = () => {
     }
   }
 
-  const _updateTask = (item) => {
+  const _updateTask = async (item) => {
     if (
       typeof todos[today] != 'undefined' &&
       typeof todos[today]['todo_list'][item.id] !== 'undefined'
@@ -109,7 +110,7 @@ const MyRoutineScreen_save_2 = () => {
       const currentTodos = Object.assign({}, todos)
       currentTodos[today]['todo_list'][item.id] = item
       setTodos[currentTodos]
-
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(currentTodos))
       const currentTasks = Object.assign({}, tasks)
       currentTasks[item.id] = item
       setTasks(currentTasks)
@@ -121,7 +122,7 @@ const MyRoutineScreen_save_2 = () => {
     }
   }
   const [change, setChange] = useState(true)
-  const _toggleTask = (id) => {
+  const _toggleTask = async (id) => {
     {
       /*const currentTasks = Object.assign({}, tasks)
     currentTasks[id]['completed'] = !currentTasks[id]['completed']
@@ -138,6 +139,7 @@ const MyRoutineScreen_save_2 = () => {
         'todo_list'
       ][id]['completed']
       setTodos[currentTodos]
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(currentTodos))
 
       setChange(!change)
     } else {
@@ -214,7 +216,6 @@ const MyRoutineScreen_save_2 = () => {
   })
   const today = `${month}.${day}`
 
-  //console.log(hoursRange)
   const onSave = async () => {
     Alert.alert('Save')
 
@@ -255,12 +256,15 @@ const MyRoutineScreen_save_2 = () => {
     setHoursRange(renewhours)
     //console.log('todos', todos[today]['todo_list'])
   }
+
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY)
-    console.log('load todo ', JSON.parse(s))
+    //console.log('load todo ', JSON.parse(s))
     s !== null ? setTodos(JSON.parse(s)) : null
   }
-  //데이터 전체 지우기AsyncStorage.clear()
+
+  //데이터 전체 지우기
+  AsyncStorage.clear()
   return isReady ? (
     <LinearGradient
       colors={[
@@ -344,7 +348,42 @@ const MyRoutineScreen_save_2 = () => {
           <Button title="Post" onPress={onPost}></Button>
         </View>
         <View style={[styles.timePick]}>
-          {typeof todos[today] == 'undefined'
+          {typeof todos[today] == 'undefined' ? (
+            Object.values(hoursRange).map((item) => (
+              <>
+                <TimePick
+                  key={item.id}
+                  item={item}
+                  text={item.text}
+                  id={item.id}
+                  setHoursRange={setHoursRange}
+                  hoursRange={hoursRange}
+                />
+              </>
+            ))
+          ) : (
+            <>
+              <TimePick
+                key={1}
+                id={1}
+                text={todos[today]['startTime']}
+                item={todos[today]['startTime']}
+                setHoursRange={setHoursRange}
+                hoursRange={hoursRange}
+              />
+              <TimePick
+                key={2}
+                id={2}
+                text={todos[today]['endTime']}
+                item={todos[today]['endTime']}
+                setHoursRange={setHoursRange}
+                hoursRange={hoursRange}
+              />
+            </>
+          )}
+          {/*
+
+         {typeof todos[today] == 'undefined'
             ? Object.values(hoursRange).map((item) => (
                 <>
                   <Text>{item.text}</Text>
@@ -366,30 +405,6 @@ const MyRoutineScreen_save_2 = () => {
                   />
                 </>
               ))}
-          {/*
-
-            {Object.values(hoursRange).map((item) => (
-            <TimePick
-              key={item.id}
-              item={item}
-              setHoursRange={setHoursRange}
-              hoursRange={hoursRange}
-            />
-          ))}
-
-
-
-            {typeof todos[today] == 'undefined' ? 
-          Object.values(hoursRange).map((item) => (
-            <TimePick
-              key={item.id}
-              item={item}
-              setHoursRange={setHoursRange}
-              hoursRange={hoursRange}
-            />
-         )) : (
-          <Title value={todos[today]['title']} onChangeText={setTitle}></Title>
-        )}
            */}
         </View>
 
